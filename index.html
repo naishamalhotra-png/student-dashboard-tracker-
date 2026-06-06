@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Progress Report Tracker</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="wrap topbar__inner">
+        <div class="brand">
+          <div class="brand__mark" aria-hidden="true">SP</div>
+          <div>
+            <h1>Student Progress Report Tracker</h1>
+            <p class="muted">Daily check-in for skills, coding, health, errands, and spiritual well-being.</p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <label class="field field--compact">
+            <span class="field__label">Date</span>
+            <input id="date" type="date" />
+          </label>
+
+          <div class="btnrow">
+            <button id="btnSave" class="btn btn--primary" type="button">Save</button>
+            <button id="btnPrint" class="btn" type="button">Print</button>
+            <button id="btnExport" class="btn" type="button">Export</button>
+            <label class="btn btn--ghost" for="importFile">Import</label>
+            <input id="importFile" type="file" accept="application/json" hidden />
+          </div>
+
+          <div class="status">
+            <span class="pill" id="saveState">Ready</span>
+            <span class="muted" id="lastSaved"></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="grid">
+        <article class="card card--hero" id="cardSummary">
+          <div class="card__header">
+            <h2>Today’s Snapshot</h2>
+            <p class="muted">A quick read of how your day is going.</p>
+          </div>
+
+          <div class="summary">
+            <div class="kpi">
+              <div class="kpi__label">Overall Progress</div>
+              <div class="kpi__value"><span id="overallPct">0</span><span class="kpi__suffix">%</span></div>
+              <div class="bar">
+                <div class="bar__fill" id="overallBar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="mini">
+              <div class="mini__item">
+                <div class="mini__label">Skills</div>
+                <div class="mini__value" id="miniSkills">—</div>
+              </div>
+              <div class="mini__item">
+                <div class="mini__label">Coding</div>
+                <div class="mini__value" id="miniCoding">—</div>
+              </div>
+              <div class="mini__item">
+                <div class="mini__label">Health</div>
+                <div class="mini__value" id="miniHealth">—</div>
+              </div>
+              <div class="mini__item">
+                <div class="mini__label">Errands</div>
+                <div class="mini__value" id="miniErrands">—</div>
+              </div>
+              <div class="mini__item">
+                <div class="mini__label">Spiritual</div>
+                <div class="mini__value" id="miniSpiritual">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-notes">
+            <label class="field">
+              <span class="field__label">Top win today</span>
+              <input id="win" type="text" placeholder="What’s one thing you’re proud of today?" />
+            </label>
+            <label class="field">
+              <span class="field__label">Biggest challenge</span>
+              <input id="challenge" type="text" placeholder="What got in the way today?" />
+            </label>
+            <label class="field">
+              <span class="field__label">Tomorrow’s focus</span>
+              <input id="focus" type="text" placeholder="One intention for tomorrow…" />
+            </label>
+          </div>
+        </article>
+
+        <article class="card" id="cardSkills">
+          <div class="card__header">
+            <h2>Skills</h2>
+            <p class="muted">Rate 1–5. These roll up into your daily snapshot.</p>
+          </div>
+
+          <div class="ratings">
+            <div class="rating">
+              <div class="rating__top">
+                <div>
+                  <div class="rating__title">Focus & Discipline</div>
+                  <div class="rating__hint muted">Staying on task, finishing what you start.</div>
+                </div>
+                <div class="badge"><span id="r_focus_v">3</span>/5</div>
+              </div>
+              <input id="r_focus" type="range" min="1" max="5" step="1" value="3" />
+            </div>
+
+            <div class="rating">
+              <div class="rating__top">
+                <div>
+                  <div class="rating__title">Communication</div>
+                  <div class="rating__hint muted">Clear writing, asking good questions, teamwork.</div>
+                </div>
+                <div class="badge"><span id="r_comm_v">3</span>/5</div>
+              </div>
+              <input id="r_comm" type="range" min="1" max="5" step="1" value="3" />
+            </div>
+
+            <div class="rating">
+              <div class="rating__top">
+                <div>
+                  <div class="rating__title">Problem Solving</div>
+                  <div class="rating__hint muted">Breaking problems down, troubleshooting.</div>
+                </div>
+                <div class="badge"><span id="r_prob_v">3</span>/5</div>
+              </div>
+              <input id="r_prob" type="range" min="1" max="5" step="1" value="3" />
+            </div>
+
+            <div class="rating">
+              <div class="rating__top">
+                <div>
+                  <div class="rating__title">Time Management</div>
+                  <div class="rating__hint muted">Planning, prioritizing, showing up on time.</div>
+                </div>
+                <div class="badge"><span id="r_time_v">3</span>/5</div>
+              </div>
+              <input id="r_time" type="range" min="1" max="5" step="1" value="3" />
+            </div>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Skill notes</span>
+            <textarea id="skills_notes" rows="3" placeholder="What improved? What needs attention?"></textarea>
+          </label>
+        </article>
+
+        <article class="card" id="cardCoding">
+          <div class="card__header">
+            <h2>Coding</h2>
+            <p class="muted">Track practice + outcomes (perfect for high school/college).</p>
+          </div>
+
+          <div class="two-col">
+            <label class="field">
+              <span class="field__label">Minutes coded</span>
+              <input id="coding_minutes" type="number" min="0" step="5" placeholder="e.g., 60" />
+            </label>
+            <label class="field">
+              <span class="field__label">Problems solved</span>
+              <input id="coding_problems" type="number" min="0" step="1" placeholder="e.g., 2" />
+            </label>
+          </div>
+
+          <div class="two-col">
+            <label class="field">
+              <span class="field__label">What did you work on?</span>
+              <input id="coding_topic" type="text" placeholder="DSA, React, Python, SQL, project feature…" />
+            </label>
+            <label class="field">
+              <span class="field__label">Confidence (1–5)</span>
+              <select id="coding_conf">
+                <option value="1">1 — Struggled</option>
+                <option value="2">2</option>
+                <option value="3" selected>3 — Okay</option>
+                <option value="4">4</option>
+                <option value="5">5 — Strong</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="checks">
+            <label class="check"><input id="c_commit" type="checkbox" /> <span>Pushed a commit / saved work</span></label>
+            <label class="check"><input id="c_notes" type="checkbox" /> <span>Wrote notes / flashcards</span></label>
+            <label class="check"><input id="c_review" type="checkbox" /> <span>Reviewed yesterday’s mistakes</span></label>
+            <label class="check"><input id="c_learn" type="checkbox" /> <span>Learned something new (doc/video/article)</span></label>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Coding notes</span>
+            <textarea id="coding_notes" rows="3" placeholder="Wins, blockers, next steps, links to repo, etc."></textarea>
+          </label>
+        </article>
+
+        <article class="card" id="cardHealth">
+          <div class="card__header">
+            <h2>Personal Health</h2>
+            <p class="muted">Energy fuels everything else. Keep it honest, not perfect.</p>
+          </div>
+
+          <div class="three-col">
+            <label class="field">
+              <span class="field__label">Sleep (hours)</span>
+              <input id="sleep" type="number" min="0" max="24" step="0.5" placeholder="e.g., 7.5" />
+            </label>
+            <label class="field">
+              <span class="field__label">Water (cups)</span>
+              <input id="water" type="number" min="0" max="30" step="1" placeholder="e.g., 8" />
+            </label>
+            <label class="field">
+              <span class="field__label">Exercise (min)</span>
+              <input id="exercise" type="number" min="0" max="400" step="5" placeholder="e.g., 30" />
+            </label>
+          </div>
+
+          <div class="two-col">
+            <label class="field">
+              <span class="field__label">Mood (1–5)</span>
+              <select id="mood">
+                <option value="1">1 — Low</option>
+                <option value="2">2</option>
+                <option value="3" selected>3 — Neutral</option>
+                <option value="4">4</option>
+                <option value="5">5 — Great</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Screen time (hours)</span>
+              <input id="screen" type="number" min="0" max="24" step="0.5" placeholder="e.g., 3" />
+            </label>
+          </div>
+
+          <div class="checks">
+            <label class="check"><input id="h_meals" type="checkbox" /> <span>Ate balanced meals</span></label>
+            <label class="check"><input id="h_breaks" type="checkbox" /> <span>Took breaks / stretched</span></label>
+            <label class="check"><input id="h_outside" type="checkbox" /> <span>Went outside / got sunlight</span></label>
+            <label class="check"><input id="h_limit" type="checkbox" /> <span>Kept distractions in check</span></label>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Health notes</span>
+            <textarea id="health_notes" rows="3" placeholder="Anything affecting energy, focus, or stress?"></textarea>
+          </label>
+        </article>
+
+        <article class="card" id="cardErrands">
+          <div class="card__header">
+            <h2>Errands</h2>
+            <p class="muted">Make it small. Make it doable. Stack wins.</p>
+          </div>
+
+          <div class="adder">
+            <label class="field">
+              <span class="field__label">Add an errand</span>
+              <input id="errandNew" type="text" placeholder="e.g., Buy notebooks, call advisor, pay bill…" />
+            </label>
+            <button id="btnAddErrand" class="btn btn--soft" type="button">Add</button>
+          </div>
+
+          <div id="errandsList" class="list" aria-live="polite"></div>
+
+          <label class="field">
+            <span class="field__label">Errand notes</span>
+            <textarea id="errands_notes" rows="3" placeholder="Anything to remember?"></textarea>
+          </label>
+        </article>
+
+        <article class="card" id="cardSpiritual">
+          <div class="card__header">
+            <h2>Spiritual Well‑Being</h2>
+            <p class="muted">A quiet corner for gratitude, reflection, and alignment.</p>
+          </div>
+
+          <div class="two-col">
+            <label class="field">
+              <span class="field__label">Meditation / prayer (min)</span>
+              <input id="sp_minutes" type="number" min="0" max="240" step="5" placeholder="e.g., 10" />
+            </label>
+            <label class="field">
+              <span class="field__label">Inner peace (1–5)</span>
+              <select id="sp_peace">
+                <option value="1">1 — Restless</option>
+                <option value="2">2</option>
+                <option value="3" selected>3 — Okay</option>
+                <option value="4">4</option>
+                <option value="5">5 — Grounded</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="checks">
+            <label class="check"><input id="sp_grat" type="checkbox" /> <span>Wrote gratitude</span></label>
+            <label class="check"><input id="sp_read" type="checkbox" /> <span>Read something uplifting</span></label>
+            <label class="check"><input id="sp_kind" type="checkbox" /> <span>Did a kind act (even small)</span></label>
+            <label class="check"><input id="sp_reflect" type="checkbox" /> <span>Reflected (journal / prayer / walk)</span></label>
+          </div>
+
+          <label class="field">
+            <span class="field__label">Gratitude (1–3 lines)</span>
+            <textarea id="sp_gratitude" rows="3" placeholder="Today I’m grateful for…"></textarea>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Reflection</span>
+            <textarea id="sp_reflection" rows="3" placeholder="What did you learn about yourself today?"></textarea>
+          </label>
+        </article>
+      </section>
+
+      <footer class="footer muted">
+        <div>
+          Tip: Everything saves to <strong>your browser (localStorage)</strong>. Use Export/Import if you want backups or to move devices.
+        </div>
+        <div class="footer__right">
+          <button id="btnClearAll" class="btn" type="button">Clear all saved data</button>
+          <button id="btnReset" class="btn btn--danger" type="button">Reset this day</button>
+        </div>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
