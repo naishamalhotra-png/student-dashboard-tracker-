@@ -7,29 +7,49 @@ An aesthetic, daily student progress tracker for:
 - Errands
 - Spiritual well-being
 
-It saves **per day** in your browser using **localStorage**, with **Export/Import** for backups.
+# Student Dashboard Tracker
 
-## Run locally
+A clean, aesthetic, and practical **daily progress tracker** for students (high school / college) to stay consistent across academics, coding, health, errands, and spiritual well‑being.
 
-Open `index.html` directly, **or** run a local server:
+Built as a **lightweight static web app** (HTML/CSS/JS) with **localStorage** persistence, autosave, and JSON export/import—fast to use, easy to deploy.
 
-```bash
-python3 -m http.server 8000
-```
+---
 
-Then open: `http://localhost:8000/`
+## Features
 
-## Clear saved inputs
+### Daily tracking (all in one place)
+- **Skills (1–5 ratings):** Focus & discipline, communication, problem solving, time management  
+- **Coding:** minutes coded, problems solved, topic, confidence, and study checkboxes  
+- **Personal health:** sleep, water, exercise, mood, screen time, habits  
+- **Errands:** add/remove tasks + completion tracking  
+- **Spiritual well‑being:** meditation/prayer, inner peace, gratitude, reflection checkboxes & notes
 
-Use the **Clear all saved data** button (this clears only this tracker’s saved days on this browser).
+### Snapshot scoring
+A quick “Today’s Snapshot” view calculates an **overall progress %** and shows mini summaries for each category.
 
-## Deploy (Vercel)
+### Safe and private by default
+- Saves data **locally in your browser** (localStorage) per date
+- Includes:
+  - **Autosave**
+  - **Export** (download day as JSON)
+  - **Import** (restore from JSON)
+  - **Reset this day**
+  - **Clear all saved data** (for this tracker on the current browser)
 
-1. Push this repo to GitHub
-2. In Vercel: **New Project → Import Git Repository**
-3. Framework preset: **Other**
-4. Build command: **None**
-5. Output directory: **.** (repo root)
+### Print-ready
+Use the built-in **Print** button to generate a clean printable view.
 
-That’s it — Vercel will serve `index.html` as the site.
+---
+
+## Tech Stack
+
+- **HTML + CSS + Vanilla JavaScript**
+- No frameworks, no database, no backend
+- Static hosting friendly (GitHub Pages / Vercel / Netlify)
+
+---
+
+## Live website (link)
+https://student-dashboard-tracker.vercel.app/
+
 
